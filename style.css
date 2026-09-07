@@ -46,7 +46,8 @@ html {
 }
 
 body {
-  background: var(--dark);
+  /* --dark reemplazado por crema: evita el cuadro morado en overscroll/bounce */
+  background: var(--cream);
   color: var(--burgundy);
   font-family: var(--font-b);
   line-height: 1.5;
@@ -77,33 +78,29 @@ body.scroll-locked {
   touch-action: none;
 }
 
-/* ── Fondo único global fijo para toda la invitación ────────────────── */
-/*    La imagen va en body con background-attachment:fixed — método más  */
-/*    robusto cross-device. iOS Safari ignora fixed en position:fixed,   */
-/*    pero lo respeta cuando está en el propio body/html.                 */
-body {
+/* ── Fondo global fijo — usa un div posición fixed en lugar de body     ──
+   Razón: background-attachment:fixed en body recalcula la imagen cada vez
+   que el viewport cambia de alto (barra URL móvil), causando que el fondo
+   se agrande y encoja visiblemente. Un div fixed nunca se recalcula.       */
+.global-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Imagen de fondo en el div fijo — no se mueve con el viewport */
   background-image: url('fondo.jpeg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  /* Overlay oscuro sutil encima */
+  /* El overlay va en ::after para no conflictar con background-image */
 }
 
-/* En iOS Safari, background-attachment:fixed se rompe dentro de         */
-/* scroll containers, pero en body funciona correctamente. Como fallback  */
-/* para dispositivos que aún fallen, forzamos que la imagen llene todo.  */
-@supports (-webkit-touch-callout: none) {
-  body {
-    background-attachment: scroll;
-    background-size: cover;
-  }
-}
-
-.global-bg {
-  position: fixed;
+.global-bg::after {
+  content: '';
+  position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 0;
+  background: rgba(0, 0, 0, 0.12);
   pointer-events: none;
 }
 
