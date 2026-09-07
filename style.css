@@ -834,40 +834,34 @@ body.scroll-locked {
   text-shadow: none;
 }
 
-/* ── Estado inicial de los spans (CSS-first, no depende de GSAP) ─────── */
-
-/* Palabras generadas por prepareSplit() — invisibles desde el principio */
-.reveal-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(14px);
-  filter: blur(8px);
-  will-change: opacity, transform, filter;
-}
-
-/* Caracteres del título — invisibles, con inclinación 3D */
+/* ── Animación CSS fluida para el mensaje "Querida vida" ────────────────── */
+.reveal-word,
 .reveal-char {
   display: inline-block;
-  white-space: pre;       /* preserva espacios entre caracteres */
   opacity: 0;
-  transform: translateY(20px);
-  filter: blur(6px);
-  will-change: opacity, transform, filter;
+  transform: translateY(12px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Perspectiva 3D para el efecto rotateX del título */
-.message-title {
-  perspective: 600px;
-  transform-style: preserve-3d;
+.reveal-char {
+  white-space: pre;
 }
 
-/* Fallback accesible: si JS/GSAP falla, la clase .msg-revealed
-   que se añade a la sección muestra todo de golpe */
 #mensaje.msg-revealed .reveal-word,
 #mensaje.msg-revealed .reveal-char {
-  opacity: 1 !important;
-  transform: none !important;
-  filter: none !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .reveal-word,
+  .reveal-char {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 

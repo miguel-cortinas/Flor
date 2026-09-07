@@ -271,11 +271,10 @@ function initMensajeReveal() {
   const section = document.getElementById('mensaje');
   if (!section) return;
 
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const revealEls = Array.from(section.querySelectorAll('[data-reveal]'));
   if (!revealEls.length) return;
 
-  // ── 1) Preparar divididos si no están listos
+  // Preparar divididos para accesibilidad y maquetación
   revealEls.forEach(el => {
     if (!el.querySelector('.reveal-word') && !el.querySelector('.reveal-char')) {
       const type = el.dataset.reveal;
@@ -284,28 +283,12 @@ function initMensajeReveal() {
     }
   });
 
-  if (typeof gsap === 'undefined' || prefersReduced) {
-    section.classList.add('msg-revealed');
-    return;
-  }
-
-  // Asegurar estado inicial oculto con GSAP antes de que inicie la secuencia
-  revealEls.forEach(el => {
-    const chars = el.querySelectorAll('.reveal-char');
-    const words = el.querySelectorAll('.reveal-word');
-    if (chars.length) gsap.set(chars, { opacity: 0, y: 22, filter: 'blur(6px)' });
-    if (words.length) gsap.set(words, { opacity: 0, y: 16, filter: 'blur(6px)' });
-    if (el.dataset.reveal === 'divider') gsap.set(el, { opacity: 0, scaleX: 0.1 });
-  });
-
-  // IntersectionObserver para disparar el reveal al llegar a la sección
-  let fired = false;
+  // IntersectionObserver ligero para activar la animación CSS cuando entra en pantalla
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && !fired) {
-        fired = true;
+      if (entry.isIntersecting) {
+        section.classList.add('msg-revealed');
         observer.disconnect();
-        playMensajeSequence(revealEls);
       }
     });
   }, {
@@ -318,7 +301,6 @@ function initMensajeReveal() {
 
 /**
  * Divide el texto de `el` en spans inline (palabras o caracteres).
- * CSS ya los oculta con opacity:0 — no se necesita inline style para eso.
  */
 function prepareSplit(el, mode) {
   el.setAttribute('aria-label', el.innerText);
@@ -337,59 +319,12 @@ function prepareSplit(el, mode) {
     }).join(' ');
 
   } else {
-    // chars — CSS ya aplica display:inline-block; no inline style necesario
     el.innerHTML = el.innerText.split('').map(ch =>
       ch === ' '
         ? `<span class="reveal-char" aria-hidden="true"> </span>`
         : `<span class="reveal-char" aria-hidden="true">${ch}</span>`
     ).join('');
   }
-}
-
-/**
- * Lanza todas las animaciones en cascada.
- * cursor = tiempo en el que COMIENZA el siguiente elemento
- * (delay del elemento actual + su propia duración).
- */
-function playMensajeSequence(els) {
-  let cursor = 0;
-
-  els.forEach(el => {
-    const type  = el.dataset.reveal;
-    const delay = cursor;   // este elemento arranca en `cursor` segundos
-
-    if (type === 'title') {
-      const spans = el.querySelectorAll('.reveal-char');
-      gsap.to(spans, {
-        opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)',
-        duration: 0.6, stagger: 0.04, ease: 'expo.out', delay
-      });
-      cursor = delay + 0.6 + (spans.length * 0.04) + 0.15;
-
-    } else if (type === 'line') {
-      const spans = el.querySelectorAll('.reveal-word');
-      gsap.to(spans, {
-        opacity: 1, y: 0, filter: 'blur(0px)',
-        duration: 0.55, stagger: 0.065, ease: 'power3.out', delay
-      });
-      cursor = delay + 0.55 + (spans.length * 0.065) + 0.1;
-
-    } else if (type === 'divider') {
-      gsap.to(el, {
-        opacity: 1, scaleX: 1,
-        duration: 0.55, ease: 'power2.out',
-        transformOrigin: 'center center', delay
-      });
-      cursor = delay + 0.55 + 0.08;
-
-    } else if (type === 'gratitude') {
-      const spans = el.querySelectorAll('.reveal-word');
-      gsap.to(spans, {
-        opacity: 1, y: 0, filter: 'blur(0px)',
-        duration: 0.75, stagger: 0.09, ease: 'expo.out', delay
-      });
-    }
-  });
 }
 
 
@@ -441,7 +376,7 @@ function launchConfetti() {
     '#d4a84b'  // Dorado artesanal
   ];
 
-  const parts = Array.from({ length: 180 }, () => ({
+  const parts = Array.from({ length: 90 }, () => ({
     x:   Math.random() * w,
     y:   Math.random() * -200 - 10,
     w:   Math.random() * 11 + 5,
