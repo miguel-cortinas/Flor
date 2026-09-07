@@ -142,10 +142,20 @@ function revealContent() {
     // Mostrar la burbuja flotante de música
     document.getElementById('music-toggle-btn')?.classList.add('is-active');
 
-    // 1) Mostrar indicador DESLIZAR para la primera sección (cartel)
-    if (typeof window.updateScrollHint === 'function') {
-      window.updateScrollHint();
-    }
+    // 1) Mostrar indicador DESLIZAR para la primera sección (cartel).
+    //    Se retrasa 1000ms porque el opening tarda 850ms en el dissolve-out;
+    //    si se llama antes, la condición "opening aún visible" lo silencia.
+    setTimeout(() => {
+      if (typeof window.updateScrollHint === 'function') {
+        window.updateScrollHint();
+      }
+    }, 1000);
+    // Safety net para dispositivos lentos
+    setTimeout(() => {
+      if (typeof window.updateScrollHint === 'function') {
+        window.updateScrollHint();
+      }
+    }, 1400);
 
     // 2) Lanzar confeti rosa y blanco en la sección inicial (cartel Se Busca)
     setTimeout(() => {
@@ -453,7 +463,13 @@ function initScrollHint() {
 
   function updateHintVisibility() {
     const opening = document.getElementById('opening');
-    if (opening && opening.style.display !== 'none' && !opening.classList.contains('dissolve-out')) {
+    // El opening se considera "aún visible" solo si existe, NO está en dissolve-out
+    // y su display no es 'none'. Durante dissolve-out ya no bloquea el hint.
+    const openingVisible = opening
+      && !opening.classList.contains('dissolve-out')
+      && opening.style.display !== 'none';
+
+    if (openingVisible) {
       hint.classList.remove('is-visible');
       return;
     }
@@ -461,7 +477,7 @@ function initScrollHint() {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
     // Mostrar el indicador SOLO en la parte superior (Sección 1 Cartel).
-    // Al hacer scroll hacia abajo (> 60px), ocultar suavemente para no encimarse con los textos
+    // Al hacer scroll hacia abajo (> 60px), ocultar para no encimarse con los textos
     if (scrollTop <= 60) {
       hint.classList.add('is-visible');
     } else {
