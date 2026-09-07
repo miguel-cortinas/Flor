@@ -43,11 +43,13 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  /* Color dominante de fondo.jpeg — cubre el overscroll sin cuadro visible */
+  background: #c8a97a;
 }
 
 body {
-  /* --dark reemplazado por crema: evita el cuadro morado en overscroll/bounce */
-  background: var(--cream);
+  /* Mismo color dominante que html para que el overscroll sea invisible */
+  background: #c8a97a;
   color: var(--burgundy);
   font-family: var(--font-b);
   line-height: 1.5;
@@ -78,22 +80,34 @@ body.scroll-locked {
   touch-action: none;
 }
 
-/* ── Fondo global fijo — usa un div posición fixed en lugar de body     ──
-   Razón: background-attachment:fixed en body recalcula la imagen cada vez
-   que el viewport cambia de alto (barra URL móvil), causando que el fondo
-   se agrande y encoja visiblemente. Un div fixed nunca se recalcula.       */
+/* ── Fondo global — SOLUCIÓN DEFINITIVA PARA MÓVILES ──────────────────
+   El JS captura window.innerHeight al cargar y lo guarda en --vh (px).
+   .global-bg lo usa para tener altura congelada que no cambia cuando
+   la barra URL aparece/desaparece. Se extiende 150px extra arriba y
+   abajo para cubrir el overscroll sin mostrar el color del body.        */
 .global-bg {
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
+  /* Extenemos 150px más allá del viewport en ambas direcciones:
+     - cubre el overscroll (rubber band de iOS / pull-to-refresh de Android)
+     - no afecta visualmente porque el contenido sigue en el centro */
+  top: -150px;
+  bottom: -150px;
   z-index: 0;
   pointer-events: none;
-  /* Imagen de fondo en el div fijo — no se mueve con el viewport */
   background-image: url('fondo.jpeg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  /* Overlay oscuro sutil encima */
-  /* El overlay va en ::after para no conflictar con background-image */
+  /* La variable --vh se setea desde JS al cargar — nunca se actualiza
+     en scroll para evitar el efecto de zoom. Si no está disponible,
+     cae a 100svh que es la altura mínima estable. */
+  height: calc(var(--vh, 1svh) * 100 + 300px);
+  /* Fuerza compositing layer propio: evita que el navegador redibuje
+     este elemento cuando el viewport cambia de alto               */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .global-bg::after {
@@ -584,8 +598,8 @@ body.scroll-locked {
 /* ── Fondo único: fondo.jpeg con overlay crema ───────────────────────── */
 .sec-bg {
   position: relative;
-  min-height: 100dvh;
-  min-height: 100vh;
+  /* --vh congelado por JS: secciones no cambian alto cuando barra URL aparece */
+  min-height: calc(var(--vh, 1svh) * 100);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -607,8 +621,8 @@ body.scroll-locked {
   z-index: 1;
   padding: clamp(24px, 4vh, 60px) 20px;
   padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-  min-height: 100dvh;
-  min-height: 100vh;
+  /* --vh congelado: overlays tampoco cambian de alto */
+  min-height: calc(var(--vh, 1svh) * 100);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -695,10 +709,9 @@ body.scroll-locked {
    § 1 · INVITACIÓN — cartel central a pantalla completa
    ══════════════════════════════════════════════════════════════════════ */
 #invitacion {
-  height: 100dvh;
-  height: 100vh;
-  max-height: 100dvh;
-  max-height: 100vh;
+  /* min-height en lugar de height: evita corte de contenido */
+  min-height: calc(var(--vh, 1svh) * 100);
+  max-height: calc(var(--vh, 1svh) * 100);
   overflow: hidden;
 }
 

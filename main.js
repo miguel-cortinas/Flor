@@ -13,6 +13,9 @@ const CONFIG = {
    INIT
    ══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  // Captura --vh ANTES de cualquier otra init para que CSS ya tenga el valor
+  initViewportHeight();
+
   document.body.classList.add('scroll-locked');
 
   // Pausar el video en el primer frame para usarlo como fondo estático
@@ -24,6 +27,33 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollHint();
   initMusicPlayer();
 });
+
+/* ══════════════════════════════════════════════════════════════
+   VIEWPORT HEIGHT FIJO — evita que el fondo se agrande/encoja
+   cuando la barra URL del navegador móvil aparece/desaparece.
+
+   Capturamos window.innerHeight UNA SOLA VEZ (al cargar la página)
+   y lo guardamos como --vh en px.
+   El CSS usa calc(var(--vh) * 100) en lugar de 100dvh/100vh.
+   Solo actualizamos en orientationchange (rotar el teléfono), nunca
+   en scroll ni en resize, así la altura queda completamente congelada.
+   ══════════════════════════════════════════════════════════════ */
+function initViewportHeight() {
+  const setVh = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
+  // Captura inicial — en este momento la barra URL suele estar visible
+  setVh();
+
+  // Solo re-captura al rotar el dispositivo (cambia la dimensión real)
+  // NO se re-captura en 'resize' porque eso incluye mostrar/ocultar la barra URL
+  window.addEventListener('orientationchange', () => {
+    // Espera 400ms para que el navegador termine la rotación
+    setTimeout(setVh, 400);
+  });
+}
 
 /* ══════════════════════════════════════════════════════════════
    OPENING VIDEO — doble función:
