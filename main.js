@@ -99,21 +99,33 @@ function startOpening() {
   const opening = document.getElementById('opening');
   const video   = document.getElementById('opening-video');
 
-  // Iniciar la música de fondo con efecto atenuante (fade-in)
-  fadeInMusic();
+  // 1) REPRODUCIR MÚSICA INMEDIATAMENTE como primera acción del clic del usuario
+  if (!bgmAudio) bgmAudio = document.getElementById('bgm-audio');
+  if (bgmAudio) {
+    bgmAudio.muted = false;
+    try { bgmAudio.volume = 1.0; } catch (e) {}
+    const promise = bgmAudio.play();
+    if (promise !== undefined) {
+      promise.then(() => {
+        updateMusicButtonUI(true);
+      }).catch(err => {
+        console.warn('Playback error:', err);
+      });
+    } else {
+      updateMusicButtonUI(true);
+    }
+  }
 
-  // 1) Deshabilitar el botón para evitar doble click
+  // 2) Deshabilitar el botón para evitar doble click
   if (btn) {
     btn.disabled = true;
     btn.classList.add('exit'); // animación de desaparición neon
   }
 
-  // 2) Reproducir el video en mute (evita interferir con el foco de audio de la música)
+  // 3) Reproducir el video en mute (no interfiere con la música)
   if (video) {
     video.muted = true;
-    video.play().catch(() => {
-      // Ignorar si el navegador bloquea autoplay de video
-    });
+    video.play().catch(() => {});
   }
 
   // 3) Fade out del texto del opening (no del video)
@@ -533,10 +545,15 @@ const BGM_TARGET_VOL = 0.8;
 const BGM_FADE_DURATION = 1200; // 1.2 segundos para atenuación suave
 
 function initMusicPlayer() {
-  bgmAudio = new Audio('audio/musica.mp3');
-  bgmAudio.loop = true;
-  bgmAudio.preload = 'auto';
+  bgmAudio = document.getElementById('bgm-audio');
+  if (!bgmAudio) {
+    bgmAudio = new Audio('audio/musica.mp3');
+    bgmAudio.loop = true;
+    bgmAudio.preload = 'auto';
+  }
+  bgmAudio.muted = false;
   try { bgmAudio.volume = BGM_TARGET_VOL; } catch (e) {}
+  bgmAudio.load();
 
   const btn = document.getElementById('music-toggle-btn');
   if (btn) {
