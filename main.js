@@ -40,17 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
    ══════════════════════════════════════════════════════════════ */
 function initViewportHeight() {
   const setVh = () => {
+    // --vh: altura del viewport en la carga inicial (small viewport)
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    // --max-vh: altura máxima posible del pantalla (large viewport / max screen height)
+    // Garantiza que .global-bg cubra toda la pantalla cuando la barra URL se oculta
+    const maxH = Math.max(
+      window.innerHeight,
+      window.outerHeight || 0,
+      (window.screen && window.screen.height) || 0
+    );
+    const maxVh = maxH * 0.01;
+    document.documentElement.style.setProperty('--max-vh', `${maxVh}px`);
   };
 
-  // Captura inicial — en este momento la barra URL suele estar visible
+  // Captura inicial completamente congelada
   setVh();
 
-  // Solo re-captura al rotar el dispositivo (cambia la dimensión real)
-  // NO se re-captura en 'resize' porque eso incluye mostrar/ocultar la barra URL
+  // Solo re-captura al rotar el dispositivo
   window.addEventListener('orientationchange', () => {
-    // Espera 400ms para que el navegador termine la rotación
     setTimeout(setVh, 400);
   });
 }

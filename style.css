@@ -43,21 +43,11 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
-  /* Color dominante de fondo.jpeg — cubre el overscroll sin cuadro visible */
+  /* Tono crema de fondo.jpeg para el overscroll (sin imagen scrolling para evitar artefactos) */
   background: #c8a97a;
-  /* La imagen en html cubre el overscroll (area fuera del scroll normal).
-     No usa fixed para no interferir con .global-bg. Se escala con cover
-     pero como html no cambia de size en scroll, no hace zoom nunca. */
-  background-image: url('fondo.jpeg');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
 }
 
 body {
-  /* transparent: la franja debajo de .global-bg hereda fondo.jpeg del html
-     en lugar de mostrar un cuadro de color sólido cuando la barra URL se oculta */
   background: transparent;
   color: var(--burgundy);
   font-family: var(--font-b);
@@ -89,18 +79,19 @@ body.scroll-locked {
   touch-action: none;
 }
 
-/* ── Fondo global — div fixed con altura congelada por JS (────────────────
-   REGLA CLAVE: height = calc(var(--vh) * 100) sin ningún px extra.
-   Si el div fuera más alto que el viewport, background-size:cover
-   escalaría la imagen para cubrir el área más grande (zoom no deseado).
-   El overscroll lo cubre el fondo de html (encima). */
+/* ── Fondo global — div fixed con altura completa (100lvh / --max-vh) ───
+   Cubre el 100% de la pantalla incluso cuando la barra URL se oculta.
+   Al tener una altura fija que NO cambia durante el scroll:
+   1) background-size: cover NUNCA sufre zoom ni resizes al desplazar.
+   2) No quedan franjas o cuadros en la parte inferior.
+   3) No hay artefactos de desplazamiento de fondo. */
 .global-bg {
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  /* Altura exacta al viewport congelado: background-size:cover no cambia */
-  height: calc(var(--vh, 1svh) * 100);
+  height: 100lvh;
+  min-height: calc(var(--max-vh, 1vh) * 100);
   z-index: 0;
   pointer-events: none;
   background-image: url('fondo.jpeg');
