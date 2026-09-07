@@ -271,10 +271,11 @@ function initMensajeReveal() {
   const section = document.getElementById('mensaje');
   if (!section) return;
 
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const revealEls = Array.from(section.querySelectorAll('[data-reveal]'));
   if (!revealEls.length) return;
 
-  // Preparar divididos para accesibilidad y maquetación
+  // ── 1) Preparar divididos si no están listos
   revealEls.forEach(el => {
     if (!el.querySelector('.reveal-word') && !el.querySelector('.reveal-char')) {
       const type = el.dataset.reveal;
@@ -283,12 +284,28 @@ function initMensajeReveal() {
     }
   });
 
-  // IntersectionObserver ligero para activar la animación CSS cuando entra en pantalla
+  if (typeof gsap === 'undefined' || prefersReduced) {
+    section.classList.add('msg-revealed');
+    return;
+  }
+
+  // Asegurar estado inicial oculto con GSAP antes de que inicie la secuencia
+  revealEls.forEach(el => {
+    const chars = el.querySelectorAll('.reveal-char');
+    const words = el.querySelectorAll('.reveal-word');
+    if (chars.length) gsap.set(chars, { opacity: 0, y: 22, filter: 'blur(6px)' });
+    if (words.length) gsap.set(words, { opacity: 0, y: 16, filter: 'blur(6px)' });
+    if (el.dataset.reveal === 'divider') gsap.set(el, { opacity: 0, scaleX: 0.1 });
+  });
+
+  // IntersectionObserver para disparar el reveal al llegar a la sección
+  let fired = false;
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        section.classList.add('msg-revealed');
+      if (entry.isIntersecting && !fired) {
+        fired = true;
         observer.disconnect();
+        playMensajeSequence(revealEls);
       }
     });
   }, {
@@ -325,6 +342,50 @@ function prepareSplit(el, mode) {
         : `<span class="reveal-char" aria-hidden="true">${ch}</span>`
     ).join('');
   }
+}
+
+/**
+ * Lanza todas las animaciones en cascada para Querida Vida.
+ */
+function playMensajeSequence(els) {
+  let cursor = 0;
+
+  els.forEach(el => {
+    const type  = el.dataset.reveal;
+    const delay = cursor;
+
+    if (type === 'title') {
+      const spans = el.querySelectorAll('.reveal-char');
+      gsap.to(spans, {
+        opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)',
+        duration: 0.6, stagger: 0.04, ease: 'expo.out', delay
+      });
+      cursor = delay + 0.6 + (spans.length * 0.04) + 0.15;
+
+    } else if (type === 'line') {
+      const spans = el.querySelectorAll('.reveal-word');
+      gsap.to(spans, {
+        opacity: 1, y: 0, filter: 'blur(0px)',
+        duration: 0.55, stagger: 0.065, ease: 'power3.out', delay
+      });
+      cursor = delay + 0.55 + (spans.length * 0.065) + 0.1;
+
+    } else if (type === 'divider') {
+      gsap.to(el, {
+        opacity: 1, scaleX: 1,
+        duration: 0.55, ease: 'power2.out',
+        transformOrigin: 'center center', delay
+      });
+      cursor = delay + 0.55 + 0.08;
+
+    } else if (type === 'gratitude') {
+      const spans = el.querySelectorAll('.reveal-word');
+      gsap.to(spans, {
+        opacity: 1, y: 0, filter: 'blur(0px)',
+        duration: 0.75, stagger: 0.09, ease: 'expo.out', delay
+      });
+    }
+  });
 }
 
 
