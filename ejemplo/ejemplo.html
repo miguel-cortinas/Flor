@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="theme-color" content="#0a4f1c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Mateo cumple 9 años. ¡Estás invitado al partido más importante del año!" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://mateo-9.pages.dev/" />
+
+  <!-- Open Graph / WhatsApp Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mateo-9.pages.dev/" />
+  <meta property="og:title" content="🎂 Cumpleaños de Mateo" />
+  <meta property="og:description"
+    content="Mateo cumple 9 años y te convoca. ¡Estás invitado al partido más importante del año!" />
+  <meta property="og:site_name" content="Cumple de Mateo" />
+  <meta property="og:image" content="https://mateo-9.pages.dev/img/preview.jpg" />
+  <meta property="og:image:secure_url" content="https://mateo-9.pages.dev/img/preview.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Invitación de cumpleaños de Mateo — temática Messi" />
+  <meta property="og:locale" content="es_MX" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://mateo-9.pages.dev/" />
+  <meta name="twitter:title" content="🎂 Cumpleaños de Mateo" />
+  <meta name="twitter:description"
+    content="Mateo cumple 9 años y te convoca. ¡Estás invitado al partido más importante del año!" />
+  <meta name="twitter:image" content="https://mateo-9.pages.dev/img/preview.jpg" />
+
+  <title>Cumple de Mateo · 9 Años</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <section id="opening" class="opening opening-crack">
+    <div class="opening-overlay">
+      <div class="opening-content opening-crack-content">
+
+        <div class="crack-eyebrow">
+          <span class="crack-eyebrow-line"></span>
+          <span class="crack-eyebrow-text">CUMPLEAÑOS</span>
+          <span class="crack-eyebrow-line"></span>
+        </div>
+
+        <h1 class="crack-title">
+          <span class="crack-name">MATEO</span>
+          <span class="crack-age">9</span>
+          <span class="crack-years">AÑOS</span>
+        </h1>
+
+        <div class="crack-divider" aria-hidden="true"></div>
+
+        <button id="kickoff-btn" class="kickoff-btn kickoff-heartbeat" aria-label="Iniciar celebración">
+          <img src="../img/pelota.png" alt="" class="kickoff-ball-img" aria-hidden="true" loading="eager">
+          <span class="kickoff-text">KICK OFF</span>
+          <span class="kickoff-sheen" aria-hidden="true"></span>
+        </button>
+
+        <p class="opening-hint crack-hint">Presiona para comenzar</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="messi-video-screen" class="messi-video-screen" aria-hidden="true" aria-label="Clip de Messi">
+    <video id="messi-video" class="messi-video-el" playsinline preload="none" aria-label="Clip de Messi"
+      style="display:none">
+    </video>
+
+    <div id="messi-placeholder" class="messi-placeholder">
+      <div class="mp-inner">
+        <div class="mp-badge">🐐</div>
+        <p class="mp-title">LEO MESSI</p>
+        <p class="mp-sub">Aquí irá tu clip épico</p>
+        <div class="mp-progress-wrap">
+          <div id="mp-bar" class="mp-progress-bar"></div>
+        </div>
+        <p class="mp-hint">Agrega tu video en CONFIG.messiVideo</p>
+      </div>
+    </div>
+
+    <div id="video-zoom-overlay" class="video-zoom-overlay"></div>
+
+    <button id="skip-btn" class="skip-btn" aria-label="Saltar video" hidden>
+      <span class="skip-icon">
+        <svg viewBox="0 0 256 256" fill="currentColor" width="16" height="16" aria-hidden="true">
+          <path
+            d="M208,40a8,8,0,0,0-8,8V106.87L75.31,35.7A15.86,15.86,0,0,0,51.13,38a16,16,0,0,0-3.13,9.58v160.8A15.83,15.83,0,0,0,58,221.72a15.87,15.87,0,0,0,17.29-.86L200,149.13V208a8,8,0,0,0,16,0V48A8,8,0,0,0,208,40ZM64,208.38V47.62L184.28,128Z" />
+        </svg>
+      </span>
+      <span class="skip-label">Saltar video</span>
+    </button>
+  </div>
+
+  <div id="transition-layer" class="transition-layer" aria-hidden="true">
+    <div id="flying-ball" class="flying-ball">
+      <img src="../img/pelota.png" alt="" draggable="false" loading="eager">
+    </div>
+    <canvas id="crack-canvas" class="crack-canvas"></canvas>
+    <div id="flash-overlay" class="flash-overlay"></div>
+  </div>
+
+  <main id="main-content" class="main-content">
+
+    <section id="invitacion" class="sec-bg" style="--bg:url('../img/fondo-messi-1.jpg')">
+      <div class="sec-overlay invite-overlay">
+
+        <div class="invite-block animate-in">
+          <p class="invite-eyebrow">INVITACIÓN</p>
+          <h2 class="invite-name">MATEO</h2>
+          <p class="invite-turns">CUMPLE</p>
+          <div class="invite-age-wrap" aria-label="9 años">
+            <span class="invite-age">9</span>
+            <span class="invite-age-label">AÑOS</span>
+          </div>
+          <div class="invite-divider" aria-hidden="true"></div>
+          <p class="invite-msg">
+            Nuestro campeón cumple 9 años y quiere celebrarlo<br>
+            con todo el equipo.
+          </p>
+          <p class="invite-msg invite-msg--highlight">
+            ¡Estás convocado a este partido!
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="wave wave-dark" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="var(--dark)" />
+      </svg>
+    </div>
+
+    <section id="cuenta" class="sec-bg" style="--bg:url('../img/fondo-messi-2.jpg')">
+      <div class="sec-overlay">
+        <div class="section-header">
+          <p class="section-eyebrow animate-in">CUENTA REGRESIVA</p>
+          <img src="../img/tiempo%20para%20el%20partido.png" alt="TIEMPO PARA EL PARTIDO" class="animate-in"
+            loading="lazy" style="max-width: 380px; width: 90%; margin: 0 auto; display: block;">
+        </div>
+        <div class="scoreboard animate-in delay-200">
+          <div class="sb-top">
+            <p class="sb-league">CUENTA REGRESIVA</p>
+            <div class="sb-match">
+              <span class="sb-team">¡FALTA POCO!</span>
+            </div>
+          </div>
+          <div class="sb-body">
+            <div class="countdown-grid" id="countdown-display">
+              <div class="cu">
+                <div class="cd" id="count-days">00</div>
+                <div class="cl">DÍAS</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-hours">00</div>
+                <div class="cl">HRS</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-mins">00</div>
+                <div class="cl">MIN</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-secs">00</div>
+                <div class="cl">SEG</div>
+              </div>
+            </div>
+            <div id="countdown-msg" class="countdown-msg hidden">PARTIDO EN CURSO</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave wave-dark" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="var(--dark)" />
+      </svg>
+    </div>
+
+    <section id="detalles" class="sec-bg" style="--bg:url('../img/fondo-messi-3.jpg')">
+      <div class="sec-overlay">
+        <div class="section-header">
+          <p class="section-eyebrow animate-in">INFORMACIÓN</p>
+          <img src="../img/datos%20del%20partido.png" alt="DATOS DEL PARTIDO" class="animate-in" loading="lazy"
+            style="max-width: 380px; width: 90%; margin: 0 auto; display: block;">
+        </div>
+        <div class="details-grid">
+          <div class="detail-card animate-in delay-100">
+            <div class="dc-label">FECHA</div>
+            <div class="dc-value">14 de Agosto</div>
+            <div class="dc-sub">A celebrar</div>
+          </div>
+          <div class="detail-card animate-in delay-200">
+            <div class="dc-label">HORA</div>
+            <div class="dc-value">3:00 PM</div>
+            <div class="dc-sub">En punto</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-card animate-in delay-400">
+
+        <div class="map-card-header">
+          <span class="map-card-pin" aria-hidden="true">
+            <svg viewBox="0 0 256 256" width="18" height="18" aria-hidden="true">
+              <path
+                d="M128,240a256.24,256.24,0,0,1-32.38-42.54C75,161,56,120.35,56,96a72,72,0,0,1,144,0c0,24.35-19,65-39.62,101.46A256.24,256.24,0,0,1,128,240Z"
+                fill="currentColor" opacity="0.2" />
+              <circle cx="128" cy="96" r="24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="16" />
+              <path d="M128,240S48,154,48,96a80,80,0,0,1,160,0C208,154,128,240,128,240Z" fill="none"
+                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+            </svg>
+          </span>
+          <span class="map-card-label">SEDE DEL PARTIDO</span>
+          <span class="map-card-badge">EN VIVO</span>
+        </div>
+
+        <div class="map-iframe-wrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3501.205582036787!2d-106.01984382449845!3d28.653562475653175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDM5JzEyLjgiTiAxMDbCsDAxJzAyLjIiVw!5e0!3m2!1ses!2smx!4v1786226352316!5m2!1ses!2smx"
+            width="100%" height="240" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin" title="Ubicación de la fiesta de Mateo">
+          </iframe>
+        </div>
+
+        <div class="map-card-footer">
+          <div class="map-card-address">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"
+              aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>Calle Tercera</span>
+          </div>
+          <a id="maps-link" href="https://www.google.com/maps/place/28%C2%B039'12.8%22N+106%C2%B001'02.2%22W"
+            target="_blank" rel="noopener noreferrer" class="maps-btn" aria-label="Abrir ubicación en Google Maps">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+            </svg>
+            ABRIR EN MAPS
+          </a>
+        </div>
+
+      </div>
+
+      </div>
+    </section>
+
+    <div class="wave wave-dark" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="var(--dark)" />
+      </svg>
+    </div>
+
+    <section id="reglas" class="sec-bg" style="--bg:url('../img/fondo-messi-4.jpg')">
+      <div class="sec-overlay">
+        <div class="section-header">
+          <p class="section-eyebrow animate-in">PROTOCOLO</p>
+          <img src="../img/importante.png" alt="IMPORTANTE" class="animate-in" loading="lazy"
+            style="max-width: 380px; width: 90%; margin: 0 auto; display: block;">
+        </div>
+        <div class="dresscode-card animate-in delay-100">
+          <div class="dresscode-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" width="46" height="46">
+              <path
+                d="M19.4 4.5L16 2.8a4 4 0 0 1-8 0L4.6 4.5A2 2 0 0 0 3.5 6.3v2.8a2 2 0 0 0 2 2h1V20a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-8.9h1a2 2 0 0 0 2-2V6.3a2 2 0 0 0-1.1-1.8z"
+                fill="rgba(116,172,223,0.15)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M9.5 11v11M14.5 11v11" stroke="currentColor" stroke-width="1.5" opacity="0.3" />
+            </svg>
+          </div>
+          <div class="dresscode-body">
+            <p class="dresscode-tag">DRESS CODE</p>
+            <p class="dresscode-title">¡Ven con la camiseta<br>de tu equipo favorito!</p>
+            <p class="dresscode-sub">Cualquier equipo de fútbol es bienvenido.</p>
+            <p class="dresscode-except">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+                <path
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>Excepto: Cruz Azul, Chivas y Pumas.</span>
+            </p>
+          </div>
+          <div class="dresscode-badge" aria-hidden="true">⚽</div>
+        </div>
+
+        <!-- Anuncio alberca -->
+        <div class="pool-card animate-in delay-200">
+          <div class="pool-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" width="44" height="44" xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
+              <!-- water waves -->
+              <path d="M4 40 Q12 34 20 40 Q28 46 36 40 Q44 34 52 40 Q58 44 60 40" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" fill="none" />
+              <path d="M4 48 Q12 42 20 48 Q28 54 36 48 Q44 42 52 48 Q58 52 60 48" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" fill="none" opacity="0.6" />
+              <!-- swim figure -->
+              <circle cx="32" cy="18" r="6" fill="currentColor" opacity="0.9" />
+              <path d="M20 30 Q26 24 32 26 Q38 24 44 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                fill="none" />
+              <!-- sun rays -->
+              <circle cx="52" cy="14" r="4" fill="currentColor" opacity="0.4" />
+              <path
+                d="M52 6V8M52 20v2M44 14h-2M62 14h-2M46.3 8.3l-1.4 1.4M59.1 19.1l-1.4 1.4M59.1 8.9l-1.4-1.4M46.3 19.7l1.4-1.4"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4" />
+            </svg>
+          </div>
+          <div class="pool-card-body">
+            <p class="pool-card-tag">¡HABRÁ ALBERCA!</p>
+            <p class="pool-card-title">Trae traje de baño,<br>bloqueador y toalla</p>
+            <p class="pool-card-sub">Ven preparado para disfrutar la alberca.</p>
+          </div>
+          <div class="pool-card-badge" aria-hidden="true">🌊</div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="wave wave-dark" aria-hidden="true">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="var(--dark)" />
+      </svg>
+    </div>
+
+    <section id="rsvp" class="sec-bg" style="--bg:url('../img/fondo-messi-2.jpg')">
+      <div class="arg-strip" aria-hidden="true">
+        <div class="as-c"></div>
+        <div class="as-w"></div>
+        <div class="as-c"></div>
+      </div>
+
+      <div class="sec-overlay rsvp-sec-overlay">
+        <div class="rsvp-content animate-in">
+          <p class="rsvp-eyebrow">CONFIRMACIÓN</p>
+          <img src="../img/confirma%20tu%20asistencia.png" alt="CONFIRMA TU ASISTENCIA" loading="lazy"
+            style="max-width: 480px; width: 95%; margin: 0 auto; display: block;">
+          <p class="rsvp-sub">La afición necesita saber si vas a estar presente en este partido histórico</p>
+          <button id="rsvp-btn" class="rsvp-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" class="wa-svg" aria-hidden="true">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            CONFIRMAR ASISTENCIA
+          </button>
+          <p class="rsvp-hint">Se abrirá WhatsApp con el mensaje listo</p>
+        </div>
+      </div>
+
+      <canvas id="confetti-canvas" class="confetti-canvas" aria-hidden="true"></canvas>
+    </section>
+
+  </main>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

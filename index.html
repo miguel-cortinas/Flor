@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="theme-color" content="#0a0012" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Estás invitado. Presiona para descubrir todos los detalles." />
+
+  <title>Invitación · 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rye&family=Abril+Fatface&family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Dancing+Script:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- ══ FONDO ÚNICO FIJO ═════════════════════════════════════════════════ -->
+  <div class="global-bg" aria-hidden="true"></div>
+
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ══ INDICADOR DE SCROLL ═══════════════════════════════════════════════ -->
+  <div id="scroll-hint" class="scroll-hint" aria-hidden="true">
+    <span class="scroll-hint-label">DESLIZAR</span>
+    <div class="scroll-hint-arrows">
+      <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+    </div>
+  </div>
+
+  <!-- ══ BURBUJA FLOTANTE DE MÚSICA ═══════════════════════════════════════ -->
+  <button id="music-toggle-btn" class="music-bubble" aria-label="Reproducir o pausar música de fondo">
+    <div class="music-vinyl-disc" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+      </svg>
+    </div>
+    <div class="music-bars" aria-hidden="true">
+      <span class="music-bar"></span>
+      <span class="music-bar"></span>
+      <span class="music-bar"></span>
+    </div>
+  </button>
+
+  <!-- ══ OPENING SCREEN ══════════════════════════════════════════════════ -->
+  <section id="opening" class="opening" aria-label="Pantalla de bienvenida">
+
+    <!-- Video como fondo estático → luego se reproduce -->
+    <video id="opening-video" class="opening-video" src="opening.mp4" playsinline muted preload="metadata"
+      aria-hidden="true"></video>
+
+    <div class="opening-overlay">
+      <div class="opening-content">
+
+        <!-- Botón NEON estilo letrero del fondo -->
+        <button id="open-btn" class="neon-btn" aria-label="Abrir invitación">
+          <span class="neon-btn-text">ABRIR</span>
+          <span class="neon-btn-glow" aria-hidden="true"></span>
+        </button>
+
+        <p class="opening-hint">Presiona para comenzar</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MAIN CONTENT ════════════════════════════════════════════════════ -->
+  <main id="main-content" class="main-content">
+
+    <!-- § 1 · INVITACIÓN -->
+    <section id="invitacion" class="sec-bg">
+      <div class="sec-overlay invite-overlay">
+        <div class="invite-block animate-in">
+          <!-- Cartel principal a pantalla completa -->
+          <img src="cartel-sin-fondo.png"
+            alt="Cartel: Se Busca — Flor, acusada de cumplir años con más estilo que nunca" class="invite-cartel"
+            loading="eager">
+        </div>
+      </div>
+      <canvas id="confetti-canvas" class="confetti-canvas" aria-hidden="true"></canvas>
+    </section>
+
+    <!-- § 2 · MENSAJE "Querida vida" -->
+    <section id="mensaje" class="sec-bg mensaje-bg">
+      <div class="sec-overlay mensaje-overlay">
+        <div class="mensaje-inner">
+
+          <h2 class="message-title" data-reveal="title">Querida vida</h2>
+
+          <p class="message-text" data-reveal="line">
+            Me abrazas, me premias, me retas, me inspiras, me sacudes, me regalas sonrisas y momentos felices. También
+            me sacas lágrimas y momentos de angustia.
+          </p>
+
+          <div class="heart-divider" data-reveal="divider" aria-hidden="true">
+            <span class="heart-line"></span>
+            <span class="heart-icon">♥</span>
+            <span class="heart-line"></span>
+          </div>
+
+          <p class="message-text" data-reveal="line">
+            Eres un camino de curvas, altos y bajos, cargados de propósitos en cada situación. Hoy miro mi pasado, mi
+            presente y visualizo mi futuro.
+          </p>
+
+          <div class="heart-divider" data-reveal="divider" aria-hidden="true">
+            <span class="heart-line"></span>
+            <span class="heart-icon">♥</span>
+            <span class="heart-line"></span>
+          </div>
+
+          <p class="message-text" data-reveal="line">
+            Solo puedo darte gracias por enseñarme tanto: a ser paciente, a confiar, a tener fe.
+          </p>
+
+          <div class="heart-divider" data-reveal="divider" aria-hidden="true">
+            <span class="heart-line"></span>
+            <span class="heart-icon">♥</span>
+            <span class="heart-line"></span>
+          </div>
+
+          <p class="gratitude-text" data-reveal="gratitude">
+            Gracias dios por estos primeros 55 años de vida.<br>Y gracias por tu guardia celestial que has puesto para
+            mi.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- § 3 · DETALLES DEL EVENTO -->
+    <section id="detalles" class="sec-bg">
+      <div class="sec-overlay">
+        <div class="section-header-img-wrap animate-in">
+          <img src="img/datos del evento.png" alt="Datos del Evento" class="section-header-img" loading="lazy">
+        </div>
+        <div class="details-grid">
+          <div class="detail-card animate-in delay-100">
+            <div class="dc-label">FECHA</div>
+            <div class="dc-value">Sábado 26 de Septiembre</div>
+          </div>
+          <div class="detail-card animate-in delay-200">
+            <div class="dc-label">HORARIO</div>
+            <div class="dc-value">6:00 PM a 11:00 PM</div>
+          </div>
+        </div>
+
+        <!-- Mapa -->
+        <div class="map-card animate-in delay-400">
+          <div class="map-card-header">
+            <span class="map-card-pin" aria-hidden="true">
+              <svg viewBox="0 0 256 256" width="18" height="18" aria-hidden="true">
+                <path
+                  d="M128,240a256.24,256.24,0,0,1-32.38-42.54C75,161,56,120.35,56,96a72,72,0,0,1,144,0c0,24.35-19,65-39.62,101.46A256.24,256.24,0,0,1,128,240Z"
+                  fill="currentColor" opacity="0.2" />
+                <circle cx="128" cy="96" r="24" fill="none" stroke="currentColor" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="16" />
+                <path d="M128,240S48,154,48,96a80,80,0,0,1,160,0C208,154,128,240,128,240Z" fill="none"
+                  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+              </svg>
+            </span>
+            <span class="map-card-label">SEDE DEL EVENTO</span>
+            <span class="map-card-badge">GRANJA RIVERA</span>
+          </div>
+
+          <div class="map-iframe-wrap">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3496.4337859806355!2d-106.16316050291061!3d28.79614430283286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea6b0014c45b91%3A0x5129de731a7a90d9!2sGranja%20Rivera!5e0!3m2!1ses!2smx!4v1788806352071!5m2!1ses!2smx"
+              width="100%" height="240" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin" title="Ubicación de la celebración">
+            </iframe>
+          </div>
+
+          <div class="map-card-footer">
+            <div class="map-card-address">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"
+                aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>Granja Rivera Calle Lucía 409</span>
+            </div>
+            <a id="maps-link" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="maps-btn"
+              aria-label="Abrir ubicación en Google Maps">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+              </svg>
+              Abrir en Google Maps
+            </a>
+          </div>
+
+          <!-- Nota de acceso entre comillas debajo del mapa -->
+          <div class="map-card-note animate-in delay-300">
+            <span class="map-card-note-icon">📌</span>
+            <p class="map-card-note-text">
+              “Para más fácil tu acceso toma la carretera a Juárez y el entronque a vialidad Sacramento en la primer
+              entrada a tu izquierda.”
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 4 · AVISOS IMPORTANTES -->
+    <section id="avisos" class="sec-bg">
+      <div class="sec-overlay">
+        <div class="section-header-img-wrap animate-in">
+          <img src="img/avisos importantes.png" alt="Avisos Importantes" class="section-header-img" loading="lazy">
+        </div>
+        <div class="notices-grid">
+          <div class="notice-card animate-in delay-100">
+            <div class="notice-card-badge">
+              <span class="notice-icon">🍻</span>
+            </div>
+            <div class="notice-card-content">
+              <h3 class="notice-card-title">BEBIDAS Y ACTITUD</h3>
+              <p class="notice-card-text">
+                Solo lleva lo que desees tomar (cerveza, botella, etc) y toda la actitud para festejar conmigo.
+              </p>
+            </div>
+          </div>
+
+          <div class="notice-card animate-in delay-200">
+            <div class="notice-card-badge">
+              <span class="notice-icon">🌮</span>
+            </div>
+            <div class="notice-card-content">
+              <h3 class="notice-card-title">LA TAQUIZA</h3>
+              <p class="notice-card-text">
+                La taquiza se sirve a las <strong>7:30 PM</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 5 · CUENTA REGRESIVA -->
+    <section id="cuenta" class="sec-bg">
+      <div class="sec-overlay">
+        <div class="section-header-img-wrap animate-in">
+          <img src="img/cuenta regresiva.png" alt="Cuenta Regresiva" class="section-header-img" loading="lazy">
+        </div>
+        <div class="scoreboard animate-in delay-200">
+          <div class="sb-top">
+            <p class="sb-league">FALTAN</p>
+            <div class="sb-match">
+              <span class="sb-team">¡FALTA POCO!</span>
+            </div>
+          </div>
+          <div class="sb-body">
+            <div class="countdown-grid" id="countdown-display">
+              <div class="cu">
+                <div class="cd" id="count-days">00</div>
+                <div class="cl">DÍAS</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-hours">00</div>
+                <div class="cl">HRS</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-mins">00</div>
+                <div class="cl">MIN</div>
+              </div>
+              <div class="cc">:</div>
+              <div class="cu">
+                <div class="cd" id="count-secs">00</div>
+                <div class="cl">SEG</div>
+              </div>
+            </div>
+            <div id="countdown-msg" class="countdown-msg hidden">¡ES HOY!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 4 · CONFIRMACIÓN DE ASISTENCIA -->
+    <section id="rsvp" class="sec-bg">
+      <div class="sec-overlay rsvp-sec-overlay">
+        <div class="rsvp-content animate-in">
+
+          <div class="rsvp-header-img-wrap">
+            <img src="img/confirmacion.png" alt="¿Te apuntas? - Confirmación" class="rsvp-header-img" loading="lazy">
+          </div>
+          <p class="rsvp-sub">Por favor confirma tu asistencia para que podamos preparar todo con tiempo.</p>
+
+          <!-- Aviso de cupo -->
+          <div class="rsvp-capacity-badge" role="note" aria-label="Capacidad: 2 personas por invitación">
+            <span class="rsvp-capacity-icon" aria-hidden="true">👥</span>
+            <span class="rsvp-capacity-text">Máximo <strong>2 personas</strong> por invitación</span>
+          </div>
+
+          <!-- Botón WhatsApp -->
+          <button id="rsvp-btn" class="rsvp-btn" aria-label="Confirmar asistencia por WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" class="wa-svg" aria-hidden="true">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            CONFIRMAR ASISTENCIA
+          </button>
+
+          <p class="rsvp-hint">Se abrirá WhatsApp con el mensaje listo ✓</p>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
