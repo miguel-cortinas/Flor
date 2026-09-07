@@ -45,6 +45,14 @@ html {
   -webkit-text-size-adjust: 100%;
   /* Color dominante de fondo.jpeg — cubre el overscroll sin cuadro visible */
   background: #c8a97a;
+  /* La imagen en html cubre el overscroll (area fuera del scroll normal).
+     No usa fixed para no interferir con .global-bg. Se escala con cover
+     pero como html no cambia de size en scroll, no hace zoom nunca. */
+  background-image: url('fondo.jpeg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
 }
 
 body {
@@ -80,32 +88,24 @@ body.scroll-locked {
   touch-action: none;
 }
 
-/* ── Fondo global — SOLUCIÓN DEFINITIVA PARA MÓVILES ──────────────────
-   El JS captura window.innerHeight al cargar y lo guarda en --vh (px).
-   .global-bg lo usa para tener altura congelada que no cambia cuando
-   la barra URL aparece/desaparece. Se extiende 150px extra arriba y
-   abajo para cubrir el overscroll sin mostrar el color del body.        */
+/* ── Fondo global — div fixed con altura congelada por JS (────────────────
+   REGLA CLAVE: height = calc(var(--vh) * 100) sin ningún px extra.
+   Si el div fuera más alto que el viewport, background-size:cover
+   escalaría la imagen para cubrir el área más grande (zoom no deseado).
+   El overscroll lo cubre el fondo de html (encima). */
 .global-bg {
   position: fixed;
   left: 0;
   right: 0;
-  /* Extenemos 150px más allá del viewport en ambas direcciones:
-     - cubre el overscroll (rubber band de iOS / pull-to-refresh de Android)
-     - no afecta visualmente porque el contenido sigue en el centro */
-  top: -150px;
-  bottom: -150px;
+  top: 0;
+  /* Altura exacta al viewport congelado: background-size:cover no cambia */
+  height: calc(var(--vh, 1svh) * 100);
   z-index: 0;
   pointer-events: none;
   background-image: url('fondo.jpeg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  /* La variable --vh se setea desde JS al cargar — nunca se actualiza
-     en scroll para evitar el efecto de zoom. Si no está disponible,
-     cae a 100svh que es la altura mínima estable. */
-  height: calc(var(--vh, 1svh) * 100 + 300px);
-  /* Fuerza compositing layer propio: evita que el navegador redibuje
-     este elemento cuando el viewport cambia de alto               */
   will-change: transform;
   transform: translateZ(0);
 }
@@ -742,13 +742,13 @@ body.scroll-locked {
   margin: 0 auto;
 }
 
-/* Imagen del cartel — Maximizado para efecto Hero destacado en móviles sin solapar DESLIZAR */
+/* Imagen del cartel — tamaño congelado con var(--vh) igual que el fondo */
 .invite-cartel {
   width: 100%;
   max-width: min(540px, 94vw);
   height: auto;
-  max-height: clamp(340px, 83vh, 880px);
-  max-height: clamp(340px, 83dvh, 880px);
+  /* var(--vh) congelado por JS: el cartel no crece ni encoge en scroll */
+  max-height: clamp(340px, calc(var(--vh, 1svh) * 83), 880px);
   object-fit: contain;
   margin: auto;
   filter:
