@@ -108,13 +108,11 @@ function startOpening() {
     btn.classList.add('exit'); // animación de desaparición neon
   }
 
-  // 2) Reproducir el video
+  // 2) Reproducir el video en mute (evita interferir con el foco de audio de la música)
   if (video) {
-    video.muted = false; // habilitar audio si existe
+    video.muted = true;
     video.play().catch(() => {
-      // Si el navegador bloquea audio, reproducir en mute
-      video.muted = true;
-      video.play();
+      // Ignorar si el navegador bloquea autoplay de video
     });
   }
 
@@ -537,7 +535,8 @@ const BGM_FADE_DURATION = 1200; // 1.2 segundos para atenuación suave
 function initMusicPlayer() {
   bgmAudio = new Audio('audio/musica.mp3');
   bgmAudio.loop = true;
-  bgmAudio.volume = 0;
+  bgmAudio.preload = 'auto';
+  try { bgmAudio.volume = BGM_TARGET_VOL; } catch (e) {}
 
   const btn = document.getElementById('music-toggle-btn');
   if (btn) {
@@ -548,60 +547,44 @@ function initMusicPlayer() {
 function fadeInMusic() {
   if (!bgmAudio) return;
 
-  if (bgmFadeTimer) clearInterval(bgmFadeTimer);
-
-  if (bgmAudio.paused) {
-    bgmAudio.volume = 0;
-    bgmAudio.play().catch(err => console.log('Autoplay bloqueado:', err));
+  if (bgmFadeTimer) {
+    clearInterval(bgmFadeTimer);
+    bgmFadeTimer = null;
   }
 
-  const startTime = Date.now();
-  const startVol = bgmAudio.volume;
+  // Establecer volumen objetivo
+  try { bgmAudio.volume = BGM_TARGET_VOL; } catch (e) {}
 
-  bgmFadeTimer = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const progress = Math.min(1, elapsed / BGM_FADE_DURATION);
-
-    bgmAudio.volume = startVol + (BGM_TARGET_VOL - startVol) * progress;
-
-    if (progress >= 1) {
-      clearInterval(bgmFadeTimer);
-      bgmFadeTimer = null;
-    }
-  }, 30);
-
-  updateMusicButtonUI(true);
+  const promise = bgmAudio.play();
+  if (promise !== undefined) {
+    promise.then(() => {
+      updateMusicButtonUI(true);
+    }).catch(err => {
+      console.warn('Reproducción de música bloqueada por el navegador:', err);
+      updateMusicButtonUI(false);
+    });
+  } else {
+    updateMusicButtonUI(true);
+  }
 }
 
 function fadeOutMusic(callback) {
   if (!bgmAudio) return;
 
-  if (bgmFadeTimer) clearInterval(bgmFadeTimer);
+  if (bgmFadeTimer) {
+    clearInterval(bgmFadeTimer);
+    bgmFadeTimer = null;
+  }
 
-  const startTime = Date.now();
-  const startVol = bgmAudio.volume;
-
-  bgmFadeTimer = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const progress = Math.min(1, elapsed / BGM_FADE_DURATION);
-
-    bgmAudio.volume = Math.max(0, startVol * (1 - progress));
-
-    if (progress >= 1) {
-      clearInterval(bgmFadeTimer);
-      bgmFadeTimer = null;
-      bgmAudio.pause();
-      if (typeof callback === 'function') callback();
-    }
-  }, 30);
-
+  bgmAudio.pause();
   updateMusicButtonUI(false);
+  if (typeof callback === 'function') callback();
 }
 
 function toggleMusic() {
   if (!bgmAudio) return;
 
-  if (bgmAudio.paused || (bgmFadeTimer && bgmAudio.volume < 0.2)) {
+  if (bgmAudio.paused) {
     fadeInMusic();
   } else {
     fadeOutMusic();
