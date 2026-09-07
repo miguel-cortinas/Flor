@@ -56,8 +56,9 @@ html {
 }
 
 body {
-  /* Mismo color dominante que html para que el overscroll sea invisible */
-  background: #c8a97a;
+  /* transparent: la franja debajo de .global-bg hereda fondo.jpeg del html
+     en lugar de mostrar un cuadro de color sólido cuando la barra URL se oculta */
+  background: transparent;
   color: var(--burgundy);
   font-family: var(--font-b);
   line-height: 1.5;
