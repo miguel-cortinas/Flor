@@ -78,14 +78,31 @@ body.scroll-locked {
 }
 
 /* ── Fondo único global fijo para toda la invitación ────────────────── */
+/*    La imagen va en body con background-attachment:fixed — método más  */
+/*    robusto cross-device. iOS Safari ignora fixed en position:fixed,   */
+/*    pero lo respeta cuando está en el propio body/html.                 */
+body {
+  background-image: url('fondo.jpeg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* En iOS Safari, background-attachment:fixed se rompe dentro de         */
+/* scroll containers, pero en body funciona correctamente. Como fallback  */
+/* para dispositivos que aún fallen, forzamos que la imagen llene todo.  */
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
 .global-bg {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('fondo.jpeg');
-  background-size: cover;
-  background-position: center;
+  background: rgba(0, 0, 0, 0.15);
   z-index: 0;
   pointer-events: none;
 }
